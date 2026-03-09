@@ -1,25 +1,29 @@
-import re
 class SentinelBrain:
     def __init__(self):
-        self.threat_keywords = ["admin", "drop table", "exec", "password", "login_retry"]
+        
+        self.threat_keywords = ["admin", "drop table", "exec", "password", "login_retry", "cmd"]
 
     def analyze(self, data):
-        """The 'Thought' process of the agent."""
+        """The AI reasoning logic to determine threat levels."""
         if not data:
-            return 0.0, "Normal"
+            return 0.0, "None"
 
+        payload = data.get('payload', '').lower()
         score = 0.0
         reason = "Normal Traffic"
 
-        # Logic 1: Payload analysis (Heuristic AI)
+        
         for word in self.threat_keywords:
-            if word in data.get('payload', '').lower():
-                score += 0.7
-                reason = f"Suspicious Keyword Detected: {word}"
+            if word in payload:
+                score += 0.8
+                reason = f"Malicious Payload Keyword: '{word}'"
+                break 
 
-        # Logic 2: Size-based anomaly
-        if data.get('size', 0) > 1500:
+        
+        if data.get('size', 0) > 2000:
             score += 0.3
-            reason = "Unusually large packet size (Potential Buffer Overflow)"
+            if score < 0.8:
+                reason = "Anomalous Packet Size"
 
+    
         return min(score, 1.0), reason
