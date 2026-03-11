@@ -52,15 +52,16 @@ The agent follows the classic **MAPE-K** (Monitor, Analyze, Plan, Execute) loop:
 pip install -r requirements.txt
 
 
-Running the Agent
+1. Running the Agent
 Start the Engine:
 
-Bash
 python main.py
-Start the Dashboard:
 
-Bash
+2. Start the Dashboard:
+
 python -m streamlit run dashboard.py
+
+
 📊 Execution Example
 When a threat is detected (e.g., a packet containing cmd or admin), the system generates the following output:
 
